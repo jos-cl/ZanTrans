@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zambian AI Language Translator</title>
+    <link rel="icon" href="./images/zantranslogo.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a5c8b;
+            --primary-light: #3a7cbb;
+            --secondary: #e63946;
+            --accent: #f4a261;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --success: #2a9d8f;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f0f4f8;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5{
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px  rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            animation: pulse 2s infinite;
+            width: 100px;
+            height: 100px;
+            vertical-align: middle;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Desktop Navigation */
+        .desktop-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .desktop-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .desktop-nav a:hover {
+            color: var(--accent);
+        }
+
+        .desktop-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        .desktop-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+        }
+
+        .hamburger-btn:hover {
+            color: var(--accent);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--primary);
+            z-index: 1100;
+            padding: 2rem;
+            transition: var(--transition);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+
+        .mobile-logo i {
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-nav {
+            flex-grow: 1;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+        }
+
+        .mobile-nav li {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .mobile-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--accent);
+            padding-left: 20px;
+        }
+
+        .mobile-nav i {
+            width: 25px;
+            text-align: center;
+        }
+
+        .mobile-footer {
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Overlay for mobile menu */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 5rem;
+            background: linear-gradient(rgba(42, 92, 139, 0.9), rgba(42, 92, 139, 0.8)), url('https://images.unsplash.com/photo-1483721310020-03333e577cce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(244, 162, 97, 0.4);
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            background-color: transparent;
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(244, 162, 97, 0.5);
+        }
+
+        /* Translator Section */
+        .translator-section {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent);
+        }
+
+        .translator-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .language-selectors {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .language-box {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .language-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .language-dropdown {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: white;
+            transition: var(--transition);
+        }
+
+        .language-dropdown:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .swap-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .swap-button:hover {
+            background-color: var(--primary-light);
+            transform: rotate(180deg);
+        }
+
+        .translation-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .translation-area {
+                flex-direction: row;
+            }
+        }
+
+        .input-box, .output-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-text, .output-text {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Roboto', sans-serif;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        .input-text:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .translate-button {
+            align-self: center;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .translate-button:hover {
+            background-color: #d32f2f;
+            transform: scale(1.05);
+        }
+
+        .voice-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .voice-btn {
+            background-color: var(--primary-light);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .voice-btn:hover {
+            background-color: var(--primary);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 5rem 0;
+            background-color: #f0f4f8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Languages Section */
+        .languages-section {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .language-card {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition);
+            border-top: 5px solid var(--primary);
+        }
+
+        .language-card:hover {
+            background-color: var(--primary-light);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .language-card:hover h3,
+        .language-card:hover p {
+            color: white;
+        }
+
+        .language-flag {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .language-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .language-card p {
+            color: var(--gray);
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .settings-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+        }
+
+        .settings-modal.active .settings-container {
+            transform: translateY(0);
+        }
+
+        .settings-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-header h2 {
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .close-settings {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            transition: var(--transition);
+        }
+
+        .close-settings:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .settings-content {
+            padding: 2rem;
+        }
+
+        .settings-group {
+            margin-bottom: 2rem;
+        }
+
+        .settings-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h4 {
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .setting-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Select Setting */
+        .select-setting {
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: var(--dark);
+            min-width: 150px;
+        }
+
+        /* Save Settings Button */
+        .save-settings {
+            display: block;
+            width: 100%;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 2rem;
+        }
+
+        .save-settings:hover {
+            background-color: #238a7d;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(34, 139, 125, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-icon:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .desktop-nav {
+                display: none;
+            }
+            
+            .hamburger-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 7rem 0 4rem;
+                margin-top: 70px;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .language-selectors {
+                flex-direction: column;
+            }
+            
+            .swap-button {
+                transform: rotate(90deg);
+            }
+            
+            .swap-button:hover {
+                transform: rotate(270deg);
+            }
+            
+            .translator-container {
+                padding: 1.5rem;
+            }
+            
+            .settings-container {
+                width: 95%;
+            }
+            
+            .settings-content {
+                padding: 1.5rem;
+            }
+            
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .select-setting {
+                width: 100%;
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .mobile-menu {
+                width: 85%;
+            }
+            
+            .settings-header {
+                padding: 1rem 1.5rem;
+            }
+            
+            .settings-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- This is a Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <image src="./images/zantranslogo.png" class="logo-icon"></image>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Zambian AI Translator</h1>
+                        <p>Bridging Language Gaps with AI</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav">
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#languages">Languages</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#settings" id="settings-btn">Settings</a></li>
+                    </ul>
+                </nav>
+                
+                <!-- Hamburger Menu Button -->
+                <button class="hamburger-btn" id="hamburgerBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-header">
+            <div class="mobile-logo">
+                <image src="images/zantranslogo.png" class="logo-icon"></i>
+                <span>Zambian AI Translator</span>
+            </div>
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <nav class="mobile-nav">
+            <ul>
+                <li>
+                    <a href="#home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#languages">
+                        <i class="fas fa-globe-africa"></i>
+                        <span>Languages</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#features">
+                        <i class="fas fa-star"></i>
+                        <span>Features</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="mobile-settings-btn">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="mobile-footer">
+            <p>AI-Powered Zambian Language Translation</p>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-container">
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <button class="close-settings" id="closeSettings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="settings-content">
+                <div class="settings-group">
+                    <h3 class="settings-title">General Settings</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Dark Mode</h4>
+                            <p>Enable dark theme for better visibility in low light</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dark-mode">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Auto-Detect Language</h4>
+                            <p>Automatically detect the input language</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auto-detect" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Voice Translation</h4>
+                            <p>Enable voice input and output functionality</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="voice-translation" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-title">Translation Settings</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Translation Speed</h4>
+                            <p>Choose between faster or more accurate translations</p>
+                        </div>
+                        <select class="select-setting" id="translation-speed">
+                            <option value="fast">Fast</option>
+                            <option value="balanced" selected>Balanced</option>
+                            <option value="accurate">Most Accurate</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Default Source Language</h4>
+                            <p>Set your default language for translation</p>
+                        </div>
+                        <select class="select-setting" id="default-source">
+                            <option value="english">English</option>
+                            <option value="bemba">Bemba</option>
+                            <option value="nyanja">Nyanja</option>
+                            <option value="tonga">Tonga</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Default Target Language</h4>
+                            <p>Set your default translation target</p>
+                        </div>
+                        <select class="select-setting" id="default-target">
+                            <option value="bemba">Bemba</option>
+                            <option value="english">English</option>
+                            <option value="nyanja">Nyanja</option>
+                            <option value="tonga">Tonga</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-group">
+                    <h3 class="settings-title">Notification Settings</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Translation History</h4>
+                            <p>Save your translation history for future reference</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="save-history" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>New Feature Alerts</h4>
+                            <p>Get notified about new features and updates</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="feature-alerts" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <h4>Accuracy Feedback</h4>
+                            <p>Receive prompts to improve translation accuracy</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="accuracy-feedback">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="save-settings" id="saveSettings">
+                    <i class="fas fa-save"></i> Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2>AI-Powered Zambian Language Translator</h2>
+                <p>Seamlessly translate between English and three major Zambian languages: Bemba, Nyanja, and Tonga. Powered by advanced AI and Natural Language Processing for accurate, context-aware translations.</p>
+                <a href="#translator" class="cta-button">Try Translator Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Translator Section -->
+    <section class="translator-section" id="translator">
+        <div class="container">
+            <h2 class="section-title">AI Translator</h2>
+            <div class="translator-container">
+                <div class="language-selectors">
+                    <div class="language-box">
+                        <label class="language-label" for="source-language">Translate From:</label>
+                        <select class="language-dropdown" id="source-language">
+                            <option value="english">English</option>
+                            <option value="bemba">Bemba</option>
+                            <option value="nyanja">Nyanja</option>
+                            <option value="tonga">Tonga</option>
+                        </select>
+                    </div>
+                    
+                    <button class="swap-button" id="swap-languages">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                    
+                    <div class="language-box">
+                        <label class="language-label" for="target-language">Translate To:</label>
+                        <select class="language-dropdown" id="target-language">
+                            <option value="bemba">Bemba</option>
+                            <option value="english">English</option>
+                            <option value="nyanja">Nyanja</option>
+                            <option value="tonga">Tonga</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="translation-area">
+                    <div class="input-box">
+                        <textarea class="input-text" id="input-text" placeholder="Enter text to translate...">Hello, how are you today?</textarea>
+                        <div class="voice-buttons">
+                            <button class="voice-btn" id="voice-input">
+                                <i class="fas fa-microphone"></i> Voice Input
+                            </button>
+                            <button class="voice-btn" id="play-input">
+                                <i class="fas fa-volume-up"></i> Play
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="output-box">
+                        <div class="output-text" id="output-text">Mwakabona, muli shani lelo?</div>
+                        <div class="voice-buttons">
+                            <button class="voice-btn" id="copy-output">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button class="voice-btn" id="play-output">
+                                <i class="fas fa-volume-up"></i> Play
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="translate-button" id="translate-btn">
+                    <i class="fas fa-language"></i> Translate Text
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Languages Section -->
+    <section class="languages-section" id="languages">
+        <div class="container">
+            <h2 class="section-title">Supported Languages</h2>
+            <div class="languages-grid">
+                <div class="language-card">
+                    <div class="language-flag">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>English</h3>
+                    <p>International language for government, business, and education in Zambia.</p>
+                </div>
+                
+                <div class="language-card">
+                    <div class="language-flag">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>Bemba</h3>
+                    <p>Widely spoken in Northern, Copperbelt, and Lusaka provinces of Zambia.</p>
+                </div>
+                
+                <div class="language-card">
+                    <div class="language-flag">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <h3>Nyanja</h3>
+                    <p>Commonly used in Lusaka and Eastern provinces, and the capital city.</p>
+                </div>
+                
+                <div class="language-card">
+                    <div class="language-flag">
+                        <i class="fas fa-water"></i>
+                    </div>
+                    <h3>Tonga</h3>
+                    <p>Primarily spoken in Southern and parts of Western provinces of Zambia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Bidirectional Translation</h3>
+                    <p>Translate seamlessly between English and Zambian languages in both directions with high accuracy.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Accuracy</h3>
+                    <p>Utilizes advanced NLP and machine learning to understand context and provide accurate translations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Multi-Platform Support</h3>
+                    <p>Access the translator on web and mobile platforms with a consistent, user-friendly experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-voice"></i>
+                    </div>
+                    <h3>Voice Translation</h3>
+                    <p>Support for text-to-speech and speech-to-text functionality for hands-free translation.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>User Feedback Integration</h3>
+                    <p>The system learns and improves over time based on user feedback and corrections.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h3>Language Preservation</h3>
+                    <p>Helps preserve and promote indigenous Zambian languages through accessible technology.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Zambian AI Translator</h3>
+                    <p>An AI-powered translation system supporting bidirectional translation between English and major Zambian languages.</p>
+                    <div class="socials-icons">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#languages">Languages</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#" id="footer-settings-btn">Settings</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Target Users</h3>
+                    <ul class="footer-links">
+                        <li>Government Agencies</li>
+                        <li>Students & Educators</li>
+                        <li>Tourists & Expatriates</li>
+                        <li>Businesses</li>
+                        <li>NGOs & International Organizations</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> Ndola, Zambia</li>
+                        <li><i class="fas fa-envelope"></i> info@zantrans.ai</li>
+                        <li><i class="fas fa-phone"></i> +260 777090626</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Zambian AI Language Translator Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        
+        hamburgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            menuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        menuOverlay.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        
+        // Close mobile menu when clicking on a link (except settings)
+        document.querySelectorAll('.mobile-nav a').forEach(link => {
+            if (!link.id.includes('settings')) {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+        
+        // Settings Modal Functionality
+        const settingsModal = document.getElementById('settingsModal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const mobileSettingsBtn = document.getElementById('mobile-settings-btn');
+        const footerSettingsBtn = document.getElementById('footer-settings-btn');
+        const closeSettings = document.getElementById('closeSettings');
+        
+        // Function to open settings modal
+        function openSettingsModal() {
+            settingsModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Close mobile menu if open
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+        }
+        
+        // Function to close settings modal
+        function closeSettingsModal() {
+            settingsModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Open settings modal from various buttons
+        settingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSettingsModal();
+        });
+        
+        mobileSettingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSettingsModal();
+        });
+        
+        footerSettingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSettingsModal();
+        });
+        
+        // Close settings modal
+        closeSettings.addEventListener('click', closeSettingsModal);
+        
+        // Close settings modal when clicking outside
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) {
+                closeSettingsModal();
+            }
+        });
+        
+        // Language Swapping
+        const swapBtn = document.getElementById('swap-languages');
+        const sourceLang = document.getElementById('source-language');
+        const targetLang = document.getElementById('target-language');
+        
+        swapBtn.addEventListener('click', () => {
+            const tempValue = sourceLang.value;
+            sourceLang.value = targetLang.value;
+            targetLang.value = tempValue;
+            
+            // Also swap the text content for demo purposes
+            const inputText = document.getElementById('input-text');
+            const outputText = document.getElementById('output-text');
+            const tempText = inputText.value;
+            inputText.value = outputText.textContent;
+            outputText.textContent = tempText;
+        });
+        
+        // Translation Functionality (Demo)
+        const translateBtn = document.getElementById('translate-btn');
+        const inputText = document.getElementById('input-text');
+        const outputText = document.getElementById('output-text');
+        
+        // Sample translations for demo
+        const demoTranslations = {
+            'english-bemba': {
+                'Hello, how are you today?': 'Mwakabona, muli shani lelo?',
+                'Where is the nearest hospital?': 'Cilendo ca cipatala ca pafupi cili kwisa?',
+                'Thank you for your help': 'Natotela pa mushandi wenu'
+            },
+            'english-nyanja': {
+                'Hello, how are you today?': 'Moni, muli bwanji lero?',
+                'Where is the nearest hospital?': 'Chipatala choyandikila kwambiri chili kuti?',
+                'Thank you for your help': 'Zikomo chifukwa cha thandizo lanu'
+            },
+            'english-tonga': {
+                'Hello, how are you today?': 'Mwapona, muli uli lelo?',
+                'Where is the nearest hospital?': 'Chibadela cili afwafwi chili kuli?',
+                'Thank you for your help': 'Twatotela pa mushandi wenu'
+            },
+            'bemba-english': {
+                'Muli shani lelo?': 'Hello, how are you today?',
+                'Cilendo ca cipatala ca pafupi cili kwisa?': 'Where is the nearest hospital?',
+                'Natotela pa bwafwilisho bwenu': 'Thank you for your help'
+            }
+        };
+        
+        translateBtn.addEventListener('click', () => {
+            const source = sourceLang.value;
+            const target = targetLang.value;
+            const text = inputText.value.trim();
+            
+            if (!text) {
+                outputText.textContent = 'Please enter text to translate.';
+                return;
+            }
+            
+            // Show loading state
+            outputText.textContent = 'Translating...';
+            translateBtn.disabled = true;
+            translateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Translating...';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                const translationKey = `${source}-${target}`;
+                
+                // Check if we have a demo translation for this text
+                if (demoTranslations[translationKey] && demoTranslations[translationKey][text]) {
+                    outputText.textContent = demoTranslations[translationKey][text];
+                } else {
+                    // For demo purposes, show a generic translation message
+                    outputText.textContent = `[Translated to ${target}: "${text}"]`;
+                }
+                
+                // Reset button state
+                translateBtn.disabled = false;
+                translateBtn.innerHTML = '<i class="fas fa-language"></i> Translate Text';
+                
+                // Add animation effect
+                outputText.style.opacity = '0';
+                setTimeout(() => {
+                    outputText.style.transition = 'opacity 0.5s';
+                    outputText.style.opacity = '1';
+                }, 10);
+            }, 800);
+        });
+        
+        // Voice input simulation
+        const voiceInputBtn = document.getElementById('voice-input');
+        const playInputBtn = document.getElementById('play-input');
+        const playOutputBtn = document.getElementById('play-output');
+        const copyOutputBtn = document.getElementById('copy-output');
+        
+        voiceInputBtn.addEventListener('click', () => {
+            // Simulate voice input
+            inputText.value = "Hello, how are you today?";
+            
+            // Show feedback
+            const originalText = voiceInputBtn.innerHTML;
+            voiceInputBtn.innerHTML = '<i class="fas fa-microphone"></i> Listening...';
+            voiceInputBtn.style.backgroundColor = 'var(--secondary)';
+            
+            setTimeout(() => {
+                voiceInputBtn.innerHTML = originalText;
+                voiceInputBtn.style.backgroundColor = '';
+            }, 1500);
+        });
+        
+        playInputBtn.addEventListener('click', () => {
+            // Simulate text-to-speech for input
+            alert('Playing input text as audio...');
+        });
+        
+        playOutputBtn.addEventListener('click', () => {
+            // Simulate text-to-speech for output
+            alert('Playing translated text as audio...');
+        });
+        
+        copyOutputBtn.addEventListener('click', () => {
+            // Copy output text to clipboard
+            const textToCopy = outputText.textContent;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Show feedback
+                const originalText = copyOutputBtn.innerHTML;
+                copyOutputBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyOutputBtn.style.backgroundColor = 'var(--success)';
+                
+                setTimeout(() => {
+                    copyOutputBtn.innerHTML = originalText;
+                    copyOutputBtn.style.backgroundColor = '';
+                }, 2000);
+            });
+        });
+        
+        // Settings functionality
+        const saveSettingsBtn = document.getElementById('saveSettings');
+        const darkModeToggle = document.getElementById('dark-mode');
+        
+        saveSettingsBtn.addEventListener('click', () => {
+            // Show saving animation
+            const originalText = saveSettingsBtn.innerHTML;
+            saveSettingsBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            saveSettingsBtn.disabled = true;
+            
+            // Simulate saving delay
+            setTimeout(() => {
+                // Show success message
+                saveSettingsBtn.innerHTML = '<i class="fas fa-check"></i> Settings Saved!';
+                saveSettingsBtn.style.backgroundColor = 'var(--success)';
+                
+                // Close modal after 1.5 seconds
+                setTimeout(() => {
+                    closeSettingsModal();
+                    
+                    // Revert button after modal closes
+                    setTimeout(() => {
+                        saveSettingsBtn.innerHTML = originalText;
+                        saveSettingsBtn.disabled = false;
+                        saveSettingsBtn.style.backgroundColor = '';
+                    }, 300);
+                }, 1500);
+            }, 1000);
+        });
+        
+        // Dark mode toggle
+        darkModeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.body.style.backgroundColor = '#1a1a1a';
+                document.body.style.color = '#f0f0f0';
+                document.querySelectorAll('.translator-section, .features-section, .languages-section').forEach(section => {
+                    section.style.backgroundColor = '#2a2a2a';
+                });
+                document.querySelectorAll('.translator-container, .feature-card, .language-card').forEach(card => {
+                    card.style.backgroundColor = '#333';
+                    card.style.color = '#f0f0f0';
+                });
+            } else {
+                document.body.style.backgroundColor = '';
+                document.body.style.color = '';
+                document.querySelectorAll('.translator-section, .features-section, .languages-section').forEach(section => {
+                    section.style.backgroundColor = '';
+                });
+                document.querySelectorAll('.translator-container, .feature-card, .language-card').forEach(card => {
+                    card.style.backgroundColor = '';
+                    card.style.color = '';
+                });
+            }
+        });
+        
+        // Smooth scrolling for anchor links (except settings)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for scroll animations
+        document.querySelectorAll('.feature-card, .language-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html> 
